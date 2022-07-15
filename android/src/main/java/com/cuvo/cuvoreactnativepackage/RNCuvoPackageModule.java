@@ -1,4 +1,4 @@
-package com.bc0nt13.reactnativemoduletemplate;
+package com.cuvo.cuvoreactnativepackage;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
