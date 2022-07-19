@@ -1,11 +1,11 @@
 {
   "name": "cuvo-react-native-package",
   "version": "1.0.0",
-  "description": "",
-  "homepage": "https://github.com/bc0nt13/cuvo-react-native-package#readme",
+  "description": "A starter for the React Native library written in TypeScript, with linked example project and optional native code",
+  "homepage": "https://github.com/sivachandiran/cuvo-react-native-package#readme",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "cuvo <bruno.conti@taplabs.rocks>",
+  "author": "sivachandiran <siva4avis@gmail.com>",
   "license": "MIT",
   "files": [
     "android",

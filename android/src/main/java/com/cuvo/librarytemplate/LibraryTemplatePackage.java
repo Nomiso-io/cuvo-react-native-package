@@ -1,4 +1,4 @@
-package com.bc0nt13.librarytemplate;
+package com.cuvo.librarytemplate;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
