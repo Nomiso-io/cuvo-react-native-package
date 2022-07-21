@@ -1,14 +1,14 @@
 //
-//  BaseAESEncryption.m
-//  blunt
+//  CUVOTakeScreenShot.m
+//  Cuvo
 //
 //  Created by Siva on 25/10/21.
 //
 
-#import "BaseAESEncryption.h"
+#import "CUVOTakeScreenShot.h"
 #import "React/RCTBridgeModule.h"
 
-@interface BaseAESEncryption ()
+@interface CUVOTakeScreenShot ()
 
 @property (nonatomic, strong) RCTResponseSenderBlock callback;
 @property (nonatomic, copy) NSDictionary *options;
@@ -16,8 +16,7 @@
 @end
 
 
-
-@implementation BaseAESEncryption
+@implementation CUVOTakeScreenShot
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(takePhoto:(NSString *)option callback:(RCTResponseSenderBlock)callback)  {

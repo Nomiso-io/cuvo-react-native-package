@@ -21,7 +21,7 @@ public class RNCuvoPackagePackage implements ReactPackage  {
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new BaseAESEncryption(reactContext));
+        modules.add(new CUVOTakeScreenShot(reactContext));
 
         return modules;
     }

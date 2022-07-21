@@ -25,19 +25,18 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-public class BaseAESEncryption extends ReactContextBaseJavaModule  {
+public class CUVOTakeScreenShot extends ReactContextBaseJavaModule  {
 
     Callback callback;
 
     private static final String TEMP_FILE_PREFIX = "ReactNative-snapshot-image";
 
-    public BaseAESEncryption(ReactApplicationContext reactContext) {
+    public CUVOTakeScreenShot(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @ReactMethod
     public void takePhoto(String input,  final Callback callback) {
-
         try {
         // image naming and path  to include sd card  appending name you choose for file
             String mPath = Environment.getExternalStorageDirectory().toString() + "/"  + ".jpg";
@@ -102,6 +101,6 @@ public class BaseAESEncryption extends ReactContextBaseJavaModule  {
     }
     @Override
     public String getName() {
-        return "BaseAESEncryption";
+        return "CUVOTakeScreenShot";
     }
 }
