@@ -77,7 +77,9 @@ CVReturn CVPixelBufferCreateWithIOSurface(
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self stopRecording];
+    [self stopRecording:^(NSString *output) {
+        
+    }];
 }
 
 #pragma mark Setup
@@ -187,7 +189,8 @@ CVReturn CVPixelBufferCreateWithIOSurface(
 {
     shouldRestart = YES;
     dispatch_async(queue, ^{
-        [self stopRecording];
+        [self stopRecording:^(NSString *output) {
+        }];
     });
 }
 
@@ -238,7 +241,9 @@ CVReturn CVPixelBufferCreateWithIOSurface(
                 CMTime presentTime =  CMTimeMake(elapsedTime * TIME_SCALE, TIME_SCALE);
 
                 if(![self.writerInputPixelBufferAdaptor appendPixelBuffer:buffer withPresentationTime:presentTime]) {
-                    [self stopRecording];
+                    [self stopRecording:^(NSString *output) {
+                        
+                    }];
                 }
 
                 CVPixelBufferRelease(buffer);
@@ -309,8 +314,8 @@ CVReturn CVPixelBufferCreateWithIOSurface(
             [self finishBackgroundTask];
         }];
     }
-    
-    [self stopRecording];
+    [self stopRecording:^(NSString *output) {
+    }];
 }
 
 - (void)applicationWillEnterForeground:(NSNotification *)notification
