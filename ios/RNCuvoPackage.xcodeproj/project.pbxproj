@@ -10,6 +10,9 @@
 		A6647AF02889814600F4803A /* CuvoDocumentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = A6647AEF2889814600F4803A /* CuvoDocumentPicker.m */; };
 		A6647AF3288981CC00F4803A /* RCTConvert+CuvoDocumentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = A6647AF2288981CC00F4803A /* RCTConvert+CuvoDocumentPicker.m */; };
 		A6647AF62889821F00F4803A /* CuvoPromiseWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A6647AF52889821F00F4803A /* CuvoPromiseWrapper.m */; };
+		A69AD4722892470E00BFFB8B /* CuvoScreenRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = A69AD4712892470E00BFFB8B /* CuvoScreenRecorder.m */; };
+		A69AD4752892490700BFFB8B /* CuvoTouchPointerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A69AD4742892490700BFFB8B /* CuvoTouchPointerWindow.m */; };
+		A69AD47B289396B800BFFB8B /* CuvoRecordingPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = A69AD479289396B800BFFB8B /* CuvoRecordingPackage.m */; };
 		A6FEB1A02873390D006BF284 /* CUVOTakeScreenShot.m in Sources */ = {isa = PBXBuildFile; fileRef = A6FEB19E2873390D006BF284 /* CUVOTakeScreenShot.m */; };
 		FA4F9FE82512AA42002DB4D5 /* RNCuvoPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F9FE72512AA42002DB4D5 /* RNCuvoPackage.swift */; };
 		FA4F9FEB2512ACC2002DB4D5 /* RNCuvoPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4F9FEA2512ACC2002DB4D5 /* RNCuvoPackage.m */; };
@@ -34,6 +37,12 @@
 		A6647AF2288981CC00F4803A /* RCTConvert+CuvoDocumentPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CuvoDocumentPicker.m"; sourceTree = "<group>"; };
 		A6647AF42889821F00F4803A /* CuvoPromiseWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CuvoPromiseWrapper.h; sourceTree = "<group>"; };
 		A6647AF52889821F00F4803A /* CuvoPromiseWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CuvoPromiseWrapper.m; sourceTree = "<group>"; };
+		A69AD4702892470E00BFFB8B /* CuvoScreenRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CuvoScreenRecorder.h; sourceTree = "<group>"; };
+		A69AD4712892470E00BFFB8B /* CuvoScreenRecorder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CuvoScreenRecorder.m; sourceTree = "<group>"; };
+		A69AD4732892490700BFFB8B /* CuvoTouchPointerWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CuvoTouchPointerWindow.h; sourceTree = "<group>"; };
+		A69AD4742892490700BFFB8B /* CuvoTouchPointerWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CuvoTouchPointerWindow.m; sourceTree = "<group>"; };
+		A69AD479289396B800BFFB8B /* CuvoRecordingPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CuvoRecordingPackage.m; sourceTree = "<group>"; };
+		A69AD47A289396B800BFFB8B /* CuvoRecordingPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuvoRecordingPackage.h; sourceTree = "<group>"; };
 		A6FEB19E2873390D006BF284 /* CUVOTakeScreenShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUVOTakeScreenShot.m; sourceTree = "<group>"; };
 		A6FEB19F2873390D006BF284 /* CUVOTakeScreenShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUVOTakeScreenShot.h; sourceTree = "<group>"; };
 		FA0EFF60236CC8FB00069FA8 /* libRNCuvoPackage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNCuvoPackage.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +74,12 @@
 				A6647AF52889821F00F4803A /* CuvoPromiseWrapper.m */,
 				A6647AEE2889814600F4803A /* CuvoDocumentPicker.h */,
 				A6647AEF2889814600F4803A /* CuvoDocumentPicker.m */,
+				A69AD47A289396B800BFFB8B /* CuvoRecordingPackage.h */,
+				A69AD479289396B800BFFB8B /* CuvoRecordingPackage.m */,
+				A69AD4702892470E00BFFB8B /* CuvoScreenRecorder.h */,
+				A69AD4712892470E00BFFB8B /* CuvoScreenRecorder.m */,
+				A69AD4732892490700BFFB8B /* CuvoTouchPointerWindow.h */,
+				A69AD4742892490700BFFB8B /* CuvoTouchPointerWindow.m */,
 				FA4F9FEA2512ACC2002DB4D5 /* RNCuvoPackage.m */,
 				FA4F9FE72512AA42002DB4D5 /* RNCuvoPackage.swift */,
 				FA0EFF61236CC8FB00069FA8 /* Products */,
@@ -138,8 +153,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA4F9FE82512AA42002DB4D5 /* RNCuvoPackage.swift in Sources */,
+				A69AD47B289396B800BFFB8B /* CuvoRecordingPackage.m in Sources */,
+				A69AD4722892470E00BFFB8B /* CuvoScreenRecorder.m in Sources */,
 				A6647AF02889814600F4803A /* CuvoDocumentPicker.m in Sources */,
 				A6FEB1A02873390D006BF284 /* CUVOTakeScreenShot.m in Sources */,
+				A69AD4752892490700BFFB8B /* CuvoTouchPointerWindow.m in Sources */,
 				A6647AF3288981CC00F4803A /* RCTConvert+CuvoDocumentPicker.m in Sources */,
 				A6647AF62889821F00F4803A /* CuvoPromiseWrapper.m in Sources */,
 				FA4F9FEB2512ACC2002DB4D5 /* RNCuvoPackage.m in Sources */,
