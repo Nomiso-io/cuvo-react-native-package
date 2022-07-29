@@ -44,7 +44,7 @@ RCT_EXPORT_METHOD(startRecording:(NSString *)option)  {
 }
 RCT_EXPORT_METHOD(stopScreenRecording:(NSString *)option callback:(RCTResponseSenderBlock)callback)  {
     dispatch_async(dispatch_get_main_queue(), ^{
-         [self stopRecording:option];
+         [self stopRecording:option callback:callback];
     });
 }
 
