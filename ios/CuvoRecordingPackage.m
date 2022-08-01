@@ -43,16 +43,20 @@ RCT_EXPORT_METHOD(startRecording:(NSString *)option)  {
   
 }
 RCT_EXPORT_METHOD(stopScreenRecording:(NSString *)option callback:(RCTResponseSenderBlock)callback)  {
+    NSLog(@"stopScreenRecordingstopScreenRecordingstopScreenRecording");
+//    self.callback = callback;
+//    self.callback(@[@"teknnkdfkndfkdkffdknknfdkndfkfkdnkfndknfdknfdkndfknfdk"]);
     dispatch_async(dispatch_get_main_queue(), ^{
-         [self stopRecording:option callback:callback];
+         [self stopVideoRecorder:option callback:callback];
     });
 }
 
--(void) stopRecording:(NSString *)options callback:(RCTResponseSenderBlock)callback {
+-(void) stopVideoRecorder:(NSString *)options callback:(RCTResponseSenderBlock)callback {
 
     self.callback = callback;
-    [screenRecorder stopRecording:^(NSString *output) {
-        self.callback(@[output]);
-    }];
+    self.callback(@[@"teknnkdfkndfkdkffdknknfdkndfkfkdnkfndknfdknfdkndfknfdk"]);
+//    [screenRecorder stopRecording:^(NSString *output) {
+//        self.callback(@[output]);
+//    }];
 }
 @end

@@ -388,7 +388,7 @@ CVReturn CVPixelBufferCreateWithIOSurface(
     
     NSString *path = [self.documentDirectory stringByAppendingPathComponent:filename];
     self.VideoOutputPath = path;
-//    NSLog(@"path ----------------- %@",path);
+    NSLog(@"path ----------------- %@",path);
     return [NSURL fileURLWithPath:path];
 }
 
