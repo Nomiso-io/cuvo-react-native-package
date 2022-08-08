@@ -1,4 +1,4 @@
-enum RCTVideoError : Int {
+enum RNCuvoPackageError : Int {
     case fromJSPart
     case noLicenseServerURL
     case licenseRequestNotOk
@@ -12,11 +12,11 @@ enum RCTVideoError : Int {
     case invalidContentId
 }
 
-enum RCTVideoErrorHandler {
+enum RNCuvoPackageErrorHandler {
     
     static let noDRMData = NSError(
-        domain: "RCTVideo",
-        code: RCTVideoError.noDRMData.rawValue,
+        domain: "RNCuvoPackage",
+        code: RNCuvoPackageError.noDRMData.rawValue,
         userInfo: [
             NSLocalizedDescriptionKey: "Error obtaining DRM license.",
             NSLocalizedFailureReasonErrorKey: "No drm object found.",
@@ -24,8 +24,8 @@ enum RCTVideoErrorHandler {
         ])
     
     static let noCertificateURL = NSError(
-        domain: "RCTVideo",
-        code: RCTVideoError.noCertificateURL.rawValue,
+        domain: "RNCuvoPackage",
+        code: RNCuvoPackageError.noCertificateURL.rawValue,
         userInfo: [
             NSLocalizedDescriptionKey: "Error obtaining DRM License.",
             NSLocalizedFailureReasonErrorKey: "No certificate URL has been found.",
@@ -33,8 +33,8 @@ enum RCTVideoErrorHandler {
         ])
     
     static let noCertificateData = NSError(
-        domain: "RCTVideo",
-        code: RCTVideoError.noCertificateData.rawValue,
+        domain: "RNCuvoPackage",
+        code: RNCuvoPackageError.noCertificateData.rawValue,
         userInfo: [
             NSLocalizedDescriptionKey: "Error obtaining DRM license.",
             NSLocalizedFailureReasonErrorKey: "No certificate data obtained from the specificied url.",
@@ -42,8 +42,8 @@ enum RCTVideoErrorHandler {
         ])
     
     static let noSPC = NSError(
-        domain: "RCTVideo",
-        code: RCTVideoError.noSPC.rawValue,
+        domain: "RNCuvoPackage",
+        code: RNCuvoPackageError.noSPC.rawValue,
         userInfo: [
             NSLocalizedDescriptionKey: "Error obtaining license.",
             NSLocalizedFailureReasonErrorKey: "No spc received.",
@@ -51,8 +51,8 @@ enum RCTVideoErrorHandler {
         ])
     
     static let noLicenseServerURL = NSError(
-        domain: "RCTVideo",
-        code: RCTVideoError.noLicenseServerURL.rawValue,
+        domain: "RNCuvoPackage",
+        code: RNCuvoPackageError.noLicenseServerURL.rawValue,
         userInfo: [
             NSLocalizedDescriptionKey: "Error obtaining DRM License.",
             NSLocalizedFailureReasonErrorKey: "No license server URL has been found.",
@@ -60,8 +60,8 @@ enum RCTVideoErrorHandler {
         ])
     
     static let noDataFromLicenseRequest = NSError(
-        domain: "RCTVideo",
-        code: RCTVideoError.noDataFromLicenseRequest.rawValue,
+        domain: "RNCuvoPackage",
+        code: RNCuvoPackageError.noDataFromLicenseRequest.rawValue,
         userInfo: [
             NSLocalizedDescriptionKey: "Error obtaining DRM license.",
             NSLocalizedFailureReasonErrorKey: "No data received from the license server.",
@@ -70,8 +70,8 @@ enum RCTVideoErrorHandler {
     
     static func licenseRequestNotOk(_ statusCode: Int) -> NSError {
         return NSError(
-            domain: "RCTVideo",
-            code: RCTVideoError.licenseRequestNotOk.rawValue,
+            domain: "RNCuvoPackage",
+            code: RNCuvoPackageError.licenseRequestNotOk.rawValue,
             userInfo: [
                 NSLocalizedDescriptionKey: "Error obtaining license.",
                 NSLocalizedFailureReasonErrorKey: String(
@@ -83,8 +83,8 @@ enum RCTVideoErrorHandler {
     }
 
     static func fromJSPart(_ error: String) -> NSError {
-        return NSError(domain: "RCTVideo",
-            code: RCTVideoError.fromJSPart.rawValue,
+        return NSError(domain: "RNCuvoPackage",
+            code: RNCuvoPackageError.fromJSPart.rawValue,
             userInfo: [
                 NSLocalizedDescriptionKey: error,
                 NSLocalizedFailureReasonErrorKey: error,
@@ -93,8 +93,8 @@ enum RCTVideoErrorHandler {
     }
     
     static let invalidContentId = NSError(
-        domain: "RCTVideo",
-        code: RCTVideoError.invalidContentId.rawValue,
+        domain: "RNCuvoPackage",
+        code: RNCuvoPackageError.invalidContentId.rawValue,
         userInfo: [
             NSLocalizedDescriptionKey: "Error obtaining DRM license.",
             NSLocalizedFailureReasonErrorKey: "No valide content Id received",

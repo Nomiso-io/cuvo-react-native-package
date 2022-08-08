@@ -1,11 +1,11 @@
 import AVFoundation
 import React
 
-@objc(RCTVideoManager)
-class RCTVideoManager: RCTViewManager {
+@objc(RNCuvoPackageManager)
+class RNCuvoPackageManager: RCTViewManager {
     
     override func view() -> UIView {
-        return RCTVideo(eventDispatcher: bridge.eventDispatcher() as! RCTEventDispatcher)
+        return RNCuvoPackage(eventDispatcher: bridge.eventDispatcher() as! RCTEventDispatcher)
     }
     
     func methodQueue() -> DispatchQueue {
@@ -16,9 +16,9 @@ class RCTVideoManager: RCTViewManager {
     func save(options: NSDictionary, reactTag: NSNumber, resolve: @escaping RCTPromiseResolveBlock,reject: @escaping RCTPromiseRejectBlock) -> Void {
         bridge.uiManager.prependUIBlock({_ , viewRegistry in
             let view = viewRegistry?[reactTag]
-            if !(view is RCTVideo) {
-                RCTLogError("Invalid view returned from registry, expecting RCTVideo, got: %@", String(describing: view))
-            } else if let view = view as? RCTVideo {
+            if !(view is RNCuvoPackage) {
+                RCTLogError("Invalid view returned from registry, expecting RNCuvoPackage, got: %@", String(describing: view))
+            } else if let view = view as? RNCuvoPackage {
                 view.save(options: options, resolve: resolve, reject: reject)
             }
         })
@@ -28,9 +28,9 @@ class RCTVideoManager: RCTViewManager {
     func setLicenseResult(license: NSString, reactTag: NSNumber) -> Void {
         bridge.uiManager.prependUIBlock({_ , viewRegistry in
             let view = viewRegistry?[reactTag]
-            if !(view is RCTVideo) {
-                RCTLogError("Invalid view returned from registry, expecting RCTVideo, got: %@", String(describing: view))
-            } else if let view = view as? RCTVideo {
+            if !(view is RNCuvoPackage) {
+                RCTLogError("Invalid view returned from registry, expecting RNCuvoPackage, got: %@", String(describing: view))
+            } else if let view = view as? RNCuvoPackage {
                 view.setLicenseResult(license as String)
             }
         })
@@ -40,9 +40,9 @@ class RCTVideoManager: RCTViewManager {
     func setLicenseResultError(error: NSString, reactTag: NSNumber) -> Void {
         bridge.uiManager.prependUIBlock({_ , viewRegistry in
             let view = viewRegistry?[reactTag]
-            if !(view is RCTVideo) {
-                RCTLogError("Invalid view returned from registry, expecting RCTVideo, got: %@", String(describing: view))
-            } else if let view = view as? RCTVideo {
+            if !(view is RNCuvoPackage) {
+                RCTLogError("Invalid view returned from registry, expecting RNCuvoPackage, got: %@", String(describing: view))
+            } else if let view = view as? RNCuvoPackage {
                 view.setLicenseResultError(error as String)
             }
         })

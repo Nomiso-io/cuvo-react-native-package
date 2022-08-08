@@ -1,7 +1,7 @@
 import AVFoundation
 import Promises
 
-struct RCTVideoDRM {
+struct RNCuvoPackageDRM {
     @available(*, unavailable) private init() {}
 
     static func fetchLicense(
@@ -24,12 +24,12 @@ struct RCTVideoDRM {
                 }
                 guard httpResponse.statusCode == 200 else {
                     print("Error getting license from \(licenseServer), HTTP status code \(httpResponse.statusCode)")
-                    reject(RCTVideoErrorHandler.licenseRequestNotOk(httpResponse.statusCode))
+                    reject(RNCuvoPackageErrorHandler.licenseRequestNotOk(httpResponse.statusCode))
                     return
                 }
                 
                 guard data != nil, let decodedData = Data(base64Encoded: data, options: []) else {
-                    reject(RCTVideoErrorHandler.noDataFromLicenseRequest)
+                    reject(RNCuvoPackageErrorHandler.noDataFromLicenseRequest)
                     return
                 }
                 
@@ -85,7 +85,7 @@ struct RCTVideoDRM {
             }
             
             guard let spcData = spcData else {
-                reject(RCTVideoErrorHandler.noSPC)
+                reject(RNCuvoPackageErrorHandler.noSPC)
                 return
             }
             
@@ -98,7 +98,7 @@ struct RCTVideoDRM {
 
             guard let certificateStringUrl = certificateStringUrl,
                   let certificateURL = URL(string: certificateStringUrl.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) ?? "") else {
-                      reject(RCTVideoErrorHandler.noCertificateURL)
+                      reject(RNCuvoPackageErrorHandler.noCertificateURL)
                 return
             }
 
@@ -111,7 +111,7 @@ struct RCTVideoDRM {
             } catch {}
             
             guard let certificateData = certificateData else {
-                reject(RCTVideoErrorHandler.noCertificateData)
+                reject(RNCuvoPackageErrorHandler.noCertificateData)
                 return
             }
             
@@ -122,13 +122,13 @@ struct RCTVideoDRM {
     static func handleWithOnGetLicense(loadingRequest: AVAssetResourceLoadingRequest, contentId:String?, certificateUrl:String?, base64Certificate:Bool?) -> Promise<Data> {
         let contentIdData = contentId?.data(using: .utf8)
         
-        return RCTVideoDRM.createCertificateData(certificateStringUrl:certificateUrl, base64Certificate:base64Certificate)
+        return RNCuvoPackageDRM.createCertificateData(certificateStringUrl:certificateUrl, base64Certificate:base64Certificate)
             .then{ certificateData -> Promise<Data> in
                 guard let contentIdData = contentIdData else {
-                    throw RCTVideoError.invalidContentId as! Error
+                    throw RNCuvoPackageError.invalidContentId as! Error
                 }
                 
-                return RCTVideoDRM.fetchSpcData(
+                return RNCuvoPackageDRM.fetchSpcData(
                     loadingRequest:loadingRequest,
                     certificateData:certificateData,
                     contentIdData:contentIdData
@@ -140,14 +140,14 @@ struct RCTVideoDRM {
         let url = loadingRequest.request.url
         
         guard let contentId = contentId ?? url?.absoluteString.replacingOccurrences(of: "skd://", with:"") else {
-            return Promise(RCTVideoError.invalidContentId as! Error)
+            return Promise(RNCuvoPackageError.invalidContentId as! Error)
         }
         
         let contentIdData = NSData(bytes: contentId.cString(using: String.Encoding.utf8), length:contentId.lengthOfBytes(using: String.Encoding.utf8)) as Data
         
-        return RCTVideoDRM.createCertificateData(certificateStringUrl:certificateUrl, base64Certificate:base64Certificate)
+        return RNCuvoPackageDRM.createCertificateData(certificateStringUrl:certificateUrl, base64Certificate:base64Certificate)
             .then{ certificateData in
-                return RCTVideoDRM.fetchSpcData(
+                return RNCuvoPackageDRM.fetchSpcData(
                     loadingRequest:loadingRequest,
                     certificateData:certificateData,
                     contentIdData:contentIdData
@@ -155,9 +155,9 @@ struct RCTVideoDRM {
             }
             .then{ spcData -> Promise<Data> in
                 guard let licenseServer = licenseServer else {
-                    throw RCTVideoError.noLicenseServerURL as! Error
+                    throw RNCuvoPackageError.noLicenseServerURL as! Error
                 }
-                return RCTVideoDRM.fetchLicense(
+                return RNCuvoPackageDRM.fetchLicense(
                     licenseServer: licenseServer,
                     spcData: spcData,
                     contentId: contentId,

@@ -1,8 +1,8 @@
 import AVKit
 
-class RCTVideoPlayerViewController: AVPlayerViewController {
+class RNCuvoPackagePlayerViewController: AVPlayerViewController {
     
-    var rctDelegate:RCTVideoPlayerViewControllerDelegate!
+    var rctDelegate:RNCuvoPackagePlayerViewControllerDelegate!
     
     // Optional paramters
     var preferredOrientation:String?

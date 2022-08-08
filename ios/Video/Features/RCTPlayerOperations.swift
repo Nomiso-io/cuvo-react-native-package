@@ -2,7 +2,7 @@ import AVFoundation
 import MediaAccessibility
 import Promises
 
-let RCTVideoUnset = -1
+let RNCuvoPackageUnset = -1
 
 /*!
  * Collection of mutating functions
@@ -11,7 +11,7 @@ enum RCTPlayerOperations {
     
     static func setSideloadedText(player:AVPlayer?, textTracks:[TextTrack]?, criteria:SelectedTrackCriteria?) {
         let type = criteria?.type
-        let textTracks:[TextTrack]! = textTracks ?? RCTVideoUtils.getTextTrackInfo(player)
+        let textTracks:[TextTrack]! = textTracks ?? RNCuvoPackageUtils.getTextTrackInfo(player)
         let trackCount:Int! = player?.currentItem?.tracks.count ?? 0
 
         // The first few tracks will be audio & video track
@@ -23,7 +23,7 @@ enum RCTPlayerOperations {
             }
         }
         
-        var selectedTrackIndex:Int = RCTVideoUnset
+        var selectedTrackIndex:Int = RNCuvoPackageUnset
         
         if (type == "disabled") {
             // Select the last text index which is the disabled text track
@@ -55,7 +55,7 @@ enum RCTPlayerOperations {
         }
         
         // in the situation that a selected text track is not available (eg. specifies a textTrack not available)
-        if (type != "disabled") && selectedTrackIndex == RCTVideoUnset {
+        if (type != "disabled") && selectedTrackIndex == RNCuvoPackageUnset {
             let captioningMediaCharacteristics = MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(.user)
             let captionSettings = captioningMediaCharacteristics as? [AnyHashable]
             if ((captionSettings?.contains(AVMediaCharacteristic.transcribesSpokenDialogForAccessibility)) != nil) {
@@ -73,7 +73,7 @@ enum RCTPlayerOperations {
                 
         for i in firstTextIndex..<(trackCount) {
             var isEnabled = false
-            if selectedTrackIndex != RCTVideoUnset {
+            if selectedTrackIndex != RNCuvoPackageUnset {
                 isEnabled = i == selectedTrackIndex + firstTextIndex
             }
             player?.currentItem?.tracks[i].isEnabled = isEnabled

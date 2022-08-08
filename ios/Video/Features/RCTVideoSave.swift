@@ -1,6 +1,6 @@
 import AVFoundation
 
-enum RCTVideoSave {
+enum RNCuvoPackageSave {
 
     static func save(
         options:NSDictionary!,
@@ -21,8 +21,8 @@ enum RCTVideoSave {
             return
         }
         var path:String! = nil
-        path = RCTVideoSave.generatePathInDirectory(
-            directory: URL(fileURLWithPath: RCTVideoSave.cacheDirectoryPath() ?? "").appendingPathComponent("Videos").path,
+        path = RNCuvoPackageSave.generatePathInDirectory(
+            directory: URL(fileURLWithPath: RNCuvoPackageSave.cacheDirectoryPath() ?? "").appendingPathComponent("Videos").path,
             withExtension: ".mp4")
         let url:NSURL! = NSURL.fileURL(withPath: path) as NSURL
         exportSession.outputFileType = AVFileType.mp4
@@ -48,7 +48,7 @@ enum RCTVideoSave {
     
     static func generatePathInDirectory(directory: String?, withExtension `extension`: String?) -> String? {
         let fileName = UUID().uuidString + (`extension` ?? "")
-        RCTVideoSave.ensureDirExists(withPath: directory)
+        RNCuvoPackageSave.ensureDirExists(withPath: directory)
         return URL(fileURLWithPath: directory ?? "").appendingPathComponent(fileName).path
     }
     

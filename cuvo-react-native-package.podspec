@@ -19,24 +19,7 @@ Pod::Spec.new do |s|
     ss.dependency "PromisesSwift"
   end
 
-  s.subspec "VideoCaching" do |ss|
-    ss.dependency "react-native-video/Video"
-    ss.dependency "SPTPersistentCache", "~> 1.1.0"
-    ss.dependency "DVAssetLoaderDelegate", "~> 0.3.1"
+  s.dependency 'React'
 
-    ss.source_files = "ios/VideoCaching/**/*.{h,m,swift}"
-  end
-
-  s.dependency "React-Core"
-
-  s.default_subspec = "Video"
-
-  s.subspec "VideoCaching" do |ss|
-    ss.dependency "cuvo-react-native-package/Video"
-    ss.dependency "SPTPersistentCache", "~> 1.1.0"
-    ss.dependency "DVAssetLoaderDelegate", "~> 0.3.1"
-
-    ss.source_files = "ios/VideoCaching/**/*.{h,m,swift}"
-  end
 end
 

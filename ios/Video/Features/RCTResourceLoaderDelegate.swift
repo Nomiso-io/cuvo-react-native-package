@@ -48,7 +48,7 @@ class RCTResourceLoaderDelegate: NSObject, AVAssetResourceLoaderDelegate, URLSes
     }
 
     func setLicenseResult(_ license:String!) {
-        guard let respondData = RCTVideoUtils.base64DataFromBase64String(base64String: license),
+        guard let respondData = RNCuvoPackageUtils.base64DataFromBase64String(base64String: license),
               let _loadingRequest = _loadingRequest else {
                   setLicenseResultError("No data from JS license response")
                   return
@@ -60,7 +60,7 @@ class RCTResourceLoaderDelegate: NSObject, AVAssetResourceLoaderDelegate, URLSes
     
     func setLicenseResultError(_ error:String!) {
         if _loadingRequest != nil {
-            self.finishLoadingWithError(error: RCTVideoErrorHandler.fromJSPart(error))
+            self.finishLoadingWithError(error: RNCuvoPackageErrorHandler.fromJSPart(error))
         }
     }
     
@@ -98,7 +98,7 @@ class RCTResourceLoaderDelegate: NSObject, AVAssetResourceLoaderDelegate, URLSes
     func handleEmbeddedKey(_ loadingRequest:AVAssetResourceLoadingRequest!) -> Bool {
         guard let url = loadingRequest.request.url,
               let _localSourceEncryptionKeyScheme = _localSourceEncryptionKeyScheme,
-              let persistentKeyData = RCTVideoUtils.extractDataFromCustomSchemeUrl(from: url, scheme: _localSourceEncryptionKeyScheme)
+              let persistentKeyData = RNCuvoPackageUtils.extractDataFromCustomSchemeUrl(from: url, scheme: _localSourceEncryptionKeyScheme)
         else {
             return false
         }
@@ -121,13 +121,13 @@ class RCTResourceLoaderDelegate: NSObject, AVAssetResourceLoaderDelegate, URLSes
         _loadingRequest = loadingRequest
         
         guard let _drm = _drm, let drmType = _drm.type, drmType == "fairplay" else {
-            return finishLoadingWithError(error: RCTVideoErrorHandler.noDRMData)
+            return finishLoadingWithError(error: RNCuvoPackageErrorHandler.noDRMData)
         }
         
         var promise: Promise<Data>
         if _onGetLicense != nil {
             let contentId = _drm.contentId ?? loadingRequest.request.url?.host
-            promise = RCTVideoDRM.handleWithOnGetLicense(
+            promise = RNCuvoPackageDRM.handleWithOnGetLicense(
                 loadingRequest:loadingRequest,
                 contentId:contentId,
                 certificateUrl:_drm.certificateUrl,
@@ -140,7 +140,7 @@ class RCTResourceLoaderDelegate: NSObject, AVAssetResourceLoaderDelegate, URLSes
                                      "target": self._reactTag])
             }
         } else {
-            promise = RCTVideoDRM.handleInternalGetLicense(
+            promise = RNCuvoPackageDRM.handleInternalGetLicense(
                 loadingRequest:loadingRequest,
                 contentId:_drm.contentId,
                 licenseServer:_drm.licenseServer,
@@ -149,7 +149,7 @@ class RCTResourceLoaderDelegate: NSObject, AVAssetResourceLoaderDelegate, URLSes
                 headers:_drm.headers
             ) .then{ data -> Void in
                     guard let dataRequest = loadingRequest.dataRequest else {
-                        throw RCTVideoErrorHandler.noCertificateData
+                        throw RNCuvoPackageErrorHandler.noCertificateData
                     }
                     dataRequest.respond(with:data)
                     loadingRequest.finishLoading()

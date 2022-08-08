@@ -10,14 +10,12 @@
 		A6647AF02889814600F4803A /* CuvoDocumentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = A6647AEF2889814600F4803A /* CuvoDocumentPicker.m */; };
 		A6647AF3288981CC00F4803A /* RCTConvert+CuvoDocumentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = A6647AF2288981CC00F4803A /* RCTConvert+CuvoDocumentPicker.m */; };
 		A6647AF62889821F00F4803A /* CuvoPromiseWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A6647AF52889821F00F4803A /* CuvoPromiseWrapper.m */; };
-		A66AF00428A0C778005477B4 /* RCTVideoCachingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00128A0C778005477B4 /* RCTVideoCachingHandler.swift */; };
-		A66AF00528A0C778005477B4 /* RCTVideoCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00328A0C778005477B4 /* RCTVideoCache.m */; };
 		A66AF00C28A0C783005477B4 /* UIView+FindUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00628A0C783005477B4 /* UIView+FindUIViewController.swift */; };
-		A66AF00D28A0C783005477B4 /* RCTVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00728A0C783005477B4 /* RCTVideoManager.m */; };
-		A66AF00E28A0C783005477B4 /* RCTVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00828A0C783005477B4 /* RCTVideo.swift */; };
-		A66AF00F28A0C783005477B4 /* RCTVideoPlayerViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00928A0C783005477B4 /* RCTVideoPlayerViewControllerDelegate.swift */; };
-		A66AF01028A0C783005477B4 /* RCTVideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00A28A0C783005477B4 /* RCTVideoManager.swift */; };
-		A66AF01128A0C783005477B4 /* RCTVideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00B28A0C783005477B4 /* RCTVideoPlayerViewController.swift */; };
+		A66AF00D28A0C783005477B4 /* RNCuvoPackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00728A0C783005477B4 /* RNCuvoPackageManager.m */; };
+		A66AF00E28A0C783005477B4 /* RNCuvoPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00828A0C783005477B4 /* RNCuvoPackage.swift */; };
+		A66AF00F28A0C783005477B4 /* RNCuvoPackagePlayerViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00928A0C783005477B4 /* RNCuvoPackagePlayerViewControllerDelegate.swift */; };
+		A66AF01028A0C783005477B4 /* RNCuvoPackageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00A28A0C783005477B4 /* RNCuvoPackageManager.swift */; };
+		A66AF01128A0C783005477B4 /* RNCuvoPackagePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF00B28A0C783005477B4 /* RNCuvoPackagePlayerViewController.swift */; };
 		A66AF01928A0C7B2005477B4 /* VideoSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF01528A0C7B2005477B4 /* VideoSource.swift */; };
 		A66AF01A28A0C7B2005477B4 /* TextTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF01628A0C7B2005477B4 /* TextTrack.swift */; };
 		A66AF01B28A0C7B2005477B4 /* DRMParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66AF01728A0C7B2005477B4 /* DRMParams.swift */; };
@@ -60,15 +58,12 @@
 		A6647AF2288981CC00F4803A /* RCTConvert+CuvoDocumentPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CuvoDocumentPicker.m"; sourceTree = "<group>"; };
 		A6647AF42889821F00F4803A /* CuvoPromiseWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CuvoPromiseWrapper.h; sourceTree = "<group>"; };
 		A6647AF52889821F00F4803A /* CuvoPromiseWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CuvoPromiseWrapper.m; sourceTree = "<group>"; };
-		A66AF00128A0C778005477B4 /* RCTVideoCachingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTVideoCachingHandler.swift; sourceTree = "<group>"; };
-		A66AF00228A0C778005477B4 /* RCTVideoCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTVideoCache.h; sourceTree = "<group>"; };
-		A66AF00328A0C778005477B4 /* RCTVideoCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTVideoCache.m; sourceTree = "<group>"; };
 		A66AF00628A0C783005477B4 /* UIView+FindUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+FindUIViewController.swift"; sourceTree = "<group>"; };
-		A66AF00728A0C783005477B4 /* RCTVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTVideoManager.m; sourceTree = "<group>"; };
-		A66AF00828A0C783005477B4 /* RCTVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTVideo.swift; sourceTree = "<group>"; };
-		A66AF00928A0C783005477B4 /* RCTVideoPlayerViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTVideoPlayerViewControllerDelegate.swift; sourceTree = "<group>"; };
-		A66AF00A28A0C783005477B4 /* RCTVideoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTVideoManager.swift; sourceTree = "<group>"; };
-		A66AF00B28A0C783005477B4 /* RCTVideoPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTVideoPlayerViewController.swift; sourceTree = "<group>"; };
+		A66AF00728A0C783005477B4 /* RNCuvoPackageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCuvoPackageManager.m; sourceTree = "<group>"; };
+		A66AF00828A0C783005477B4 /* RNCuvoPackage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNCuvoPackage.swift; sourceTree = "<group>"; };
+		A66AF00928A0C783005477B4 /* RNCuvoPackagePlayerViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNCuvoPackagePlayerViewControllerDelegate.swift; sourceTree = "<group>"; };
+		A66AF00A28A0C783005477B4 /* RNCuvoPackageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNCuvoPackageManager.swift; sourceTree = "<group>"; };
+		A66AF00B28A0C783005477B4 /* RNCuvoPackagePlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNCuvoPackagePlayerViewController.swift; sourceTree = "<group>"; };
 		A66AF01528A0C7B2005477B4 /* VideoSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoSource.swift; sourceTree = "<group>"; };
 		A66AF01628A0C7B2005477B4 /* TextTrack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextTrack.swift; sourceTree = "<group>"; };
 		A66AF01728A0C7B2005477B4 /* DRMParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRMParams.swift; sourceTree = "<group>"; };
@@ -92,10 +87,10 @@
 		A69AD47A289396B800BFFB8B /* CuvoRecordingPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuvoRecordingPackage.h; sourceTree = "<group>"; };
 		A6BA04DB289791C80007F9F6 /* CuvoAudioRecorderPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CuvoAudioRecorderPlayer.h; sourceTree = "<group>"; };
 		A6BA04DC289791C80007F9F6 /* CuvoAudioRecorderPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CuvoAudioRecorderPlayer.m; sourceTree = "<group>"; };
+		A6CDAC4328A0D9E3009818D0 /* RNCuvoPackage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNCuvoPackage-Bridging-Header.h"; sourceTree = "<group>"; };
 		A6FEB19E2873390D006BF284 /* CUVOTakeScreenShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUVOTakeScreenShot.m; sourceTree = "<group>"; };
 		A6FEB19F2873390D006BF284 /* CUVOTakeScreenShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUVOTakeScreenShot.h; sourceTree = "<group>"; };
 		FA0EFF60236CC8FB00069FA8 /* libRNCuvoPackage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNCuvoPackage.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA4F9FE62512AA41002DB4D5 /* RNCuvoPackage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNCuvoPackage-Bridging-Header.h"; sourceTree = "<group>"; };
 		FA4F9FE72512AA42002DB4D5 /* RNCuvoPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNCuvoPackage.swift; sourceTree = "<group>"; };
 		FA4F9FEA2512ACC2002DB4D5 /* RNCuvoPackage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNCuvoPackage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -111,27 +106,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A66AEFFF28A0C76F005477B4 /* VideoCaching */ = {
-			isa = PBXGroup;
-			children = (
-				A66AF00228A0C778005477B4 /* RCTVideoCache.h */,
-				A66AF00328A0C778005477B4 /* RCTVideoCache.m */,
-				A66AF00128A0C778005477B4 /* RCTVideoCachingHandler.swift */,
-			);
-			path = VideoCaching;
-			sourceTree = "<group>";
-		};
 		A66AF00028A0C770005477B4 /* Video */ = {
 			isa = PBXGroup;
 			children = (
 				A66AF01228A0C7A3005477B4 /* DataStructures */,
 				A66AF01328A0C7A3005477B4 /* Features */,
 				A66AF01428A0C7A3005477B4 /* RCTSwiftLog */,
-				A66AF00828A0C783005477B4 /* RCTVideo.swift */,
-				A66AF00728A0C783005477B4 /* RCTVideoManager.m */,
-				A66AF00A28A0C783005477B4 /* RCTVideoManager.swift */,
-				A66AF00B28A0C783005477B4 /* RCTVideoPlayerViewController.swift */,
-				A66AF00928A0C783005477B4 /* RCTVideoPlayerViewControllerDelegate.swift */,
+				A66AF00828A0C783005477B4 /* RNCuvoPackage.swift */,
+				A66AF00728A0C783005477B4 /* RNCuvoPackageManager.m */,
+				A66AF00A28A0C783005477B4 /* RNCuvoPackageManager.swift */,
+				A66AF00B28A0C783005477B4 /* RNCuvoPackagePlayerViewController.swift */,
+				A6CDAC4328A0D9E3009818D0 /* RNCuvoPackage-Bridging-Header.h */,
+				A66AF00928A0C783005477B4 /* RNCuvoPackagePlayerViewControllerDelegate.swift */,
 				A66AF00628A0C783005477B4 /* UIView+FindUIViewController.swift */,
 			);
 			path = Video;
@@ -176,7 +162,6 @@
 		FA0EFF57236CC8FB00069FA8 = {
 			isa = PBXGroup;
 			children = (
-				FA4F9FE62512AA41002DB4D5 /* RNCuvoPackage-Bridging-Header.h */,
 				A6FEB19F2873390D006BF284 /* CUVOTakeScreenShot.h */,
 				A6FEB19E2873390D006BF284 /* CUVOTakeScreenShot.m */,
 				A6647AF1288981CC00F4803A /* RCTConvert+CuvoDocumentPicker.h */,
@@ -194,7 +179,6 @@
 				A6BA04DB289791C80007F9F6 /* CuvoAudioRecorderPlayer.h */,
 				A6BA04DC289791C80007F9F6 /* CuvoAudioRecorderPlayer.m */,
 				A66AF00028A0C770005477B4 /* Video */,
-				A66AEFFF28A0C76F005477B4 /* VideoCaching */,
 				FA4F9FEA2512ACC2002DB4D5 /* RNCuvoPackage.m */,
 				FA4F9FE72512AA42002DB4D5 /* RNCuvoPackage.swift */,
 				FA0EFF61236CC8FB00069FA8 /* Products */,
@@ -267,22 +251,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A66AF00E28A0C783005477B4 /* RCTVideo.swift in Sources */,
+				A66AF00E28A0C783005477B4 /* RNCuvoPackage.swift in Sources */,
 				A66AF01B28A0C7B2005477B4 /* DRMParams.swift in Sources */,
 				A66AF03028A0C7C9005477B4 /* RCTSwiftLog.m in Sources */,
 				FA4F9FE82512AA42002DB4D5 /* RNCuvoPackage.swift in Sources */,
 				A66AF03128A0C7C9005477B4 /* RCTSwiftLog.swift in Sources */,
 				A66AF02728A0C7BA005477B4 /* RCTVideoSave.swift in Sources */,
-				A66AF00D28A0C783005477B4 /* RCTVideoManager.m in Sources */,
+				A66AF00D28A0C783005477B4 /* RNCuvoPackageManager.m in Sources */,
 				A66AF02B28A0C7BA005477B4 /* RCTVideoDRM.swift in Sources */,
 				A66AF02528A0C7BA005477B4 /* RCTPlayerOperations.swift in Sources */,
 				A69AD47B289396B800BFFB8B /* CuvoRecordingPackage.m in Sources */,
 				A66AF01A28A0C7B2005477B4 /* TextTrack.swift in Sources */,
-				A66AF00528A0C778005477B4 /* RCTVideoCache.m in Sources */,
 				A66AF02628A0C7BA005477B4 /* RCTPlayerObserver.swift in Sources */,
 				A66AF01928A0C7B2005477B4 /* VideoSource.swift in Sources */,
 				A69AD4722892470E00BFFB8B /* CuvoScreenRecorder.m in Sources */,
-				A66AF00428A0C778005477B4 /* RCTVideoCachingHandler.swift in Sources */,
 				A66AF02A28A0C7BA005477B4 /* RCTResourceLoaderDelegate.swift in Sources */,
 				A6647AF02889814600F4803A /* CuvoDocumentPicker.m in Sources */,
 				A66AF01C28A0C7B2005477B4 /* SelectedTrackCriteria.swift in Sources */,
@@ -291,14 +273,14 @@
 				A6BA04DD289791C80007F9F6 /* CuvoAudioRecorderPlayer.m in Sources */,
 				A66AF02C28A0C7BA005477B4 /* RCTPictureInPicture.swift in Sources */,
 				A6647AF3288981CC00F4803A /* RCTConvert+CuvoDocumentPicker.m in Sources */,
-				A66AF00F28A0C783005477B4 /* RCTVideoPlayerViewControllerDelegate.swift in Sources */,
+				A66AF00F28A0C783005477B4 /* RNCuvoPackagePlayerViewControllerDelegate.swift in Sources */,
 				A66AF00C28A0C783005477B4 /* UIView+FindUIViewController.swift in Sources */,
 				A6647AF62889821F00F4803A /* CuvoPromiseWrapper.m in Sources */,
-				A66AF01128A0C783005477B4 /* RCTVideoPlayerViewController.swift in Sources */,
+				A66AF01128A0C783005477B4 /* RNCuvoPackagePlayerViewController.swift in Sources */,
 				A66AF02828A0C7BA005477B4 /* RCTVideoErrorHandling.swift in Sources */,
 				FA4F9FEB2512ACC2002DB4D5 /* RNCuvoPackage.m in Sources */,
 				A66AF02928A0C7BA005477B4 /* RCTVideoUtils.swift in Sources */,
-				A66AF01028A0C783005477B4 /* RCTVideoManager.swift in Sources */,
+				A66AF01028A0C783005477B4 /* RNCuvoPackageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,9 +413,10 @@
 					"@loader_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = RNCuvoPackage;
+				PRODUCT_NAME = RNCuvoPackage;
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "RNCuvoPackage-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/sivachandran/Desktop/TestPackages/CuvoExampleTest/node_modules/cuvo-react-native-package/ios/Video/RNCuvoPackage-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -456,9 +439,10 @@
 					"@loader_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = RNCuvoPackage;
+				PRODUCT_NAME = RNCuvoPackage;
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "RNCuvoPackage-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/sivachandran/Desktop/TestPackages/CuvoExampleTest/node_modules/cuvo-react-native-package/ios/Video/RNCuvoPackage-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

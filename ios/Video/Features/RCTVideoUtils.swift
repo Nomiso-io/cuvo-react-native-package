@@ -5,7 +5,7 @@ import Photos
 /*!
  * Collection of pure functions
  */
-enum RCTVideoUtils {
+enum RNCuvoPackageUtils {
     
     /*!
      * Calculates and returns the playable duration of the current player item using its loaded time ranges.
@@ -80,7 +80,7 @@ enum RCTVideoUtils {
     }
     
     static func calculateSeekableDuration(_ player:AVPlayer?) -> NSNumber {
-        let timeRange:CMTimeRange = RCTVideoUtils.playerItemSeekableTimeRange(player)
+        let timeRange:CMTimeRange = RNCuvoPackageUtils.playerItemSeekableTimeRange(player)
         if CMTIME_IS_NUMERIC(timeRange.duration)
         {
             return NSNumber(value: CMTimeGetSeconds(timeRange.duration))
@@ -160,7 +160,7 @@ enum RCTVideoUtils {
 
     static func extractDataFromCustomSchemeUrl(from url: URL, scheme: String) -> Data? {
         guard url.scheme == scheme,
-              let adoptURL = RCTVideoUtils.replaceURLScheme(url:url, scheme: nil) else { return nil }
+              let adoptURL = RNCuvoPackageUtils.replaceURLScheme(url:url, scheme: nil) else { return nil }
 
         return Data(base64Encoded: adoptURL.absoluteString)
     }
@@ -204,7 +204,7 @@ enum RCTVideoUtils {
                 } else {
                     let isDisabledTrack:Bool! = textTracks[i].type == "disabled"
                     let searchPath:FileManager.SearchPathDirectory = isDisabledTrack ? .cachesDirectory : .documentDirectory;
-                    textURLAsset = AVURLAsset(url: RCTVideoUtils.urlFilePath(filepath: textUri as NSString?, searchPath: searchPath) as URL, options:nil)
+                    textURLAsset = AVURLAsset(url: RNCuvoPackageUtils.urlFilePath(filepath: textUri as NSString?, searchPath: searchPath) as URL, options:nil)
                 }
                 let textTrackAsset:AVAssetTrack! = textURLAsset.tracks(withMediaType: AVMediaType.text).first
                 if (textTrackAsset == nil) {continue} // fix when there's no textTrackAsset

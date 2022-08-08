@@ -4,7 +4,7 @@ import Foundation
 import React
 import Promises
 
-class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverHandler {
+class RNCuvoPackage: UIView, RNCuvoPackagePlayerViewControllerDelegate, RCTPlayerObserverHandler {
 
     private var _player:AVPlayer?
     private var _playerItem:AVPlayerItem?
@@ -12,7 +12,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     private var _playerBufferEmpty:Bool = true
     private var _playerLayer:AVPlayerLayer?
     
-    private var _playerViewController:RCTVideoPlayerViewController?
+    private var _playerViewController:RNCuvoPackagePlayerViewController?
     private var _videoURL:NSURL?
     
     /* DRM */
@@ -63,9 +63,9 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     private var _resouceLoaderDelegate: RCTResourceLoaderDelegate?
     private var _playerObserver: RCTPlayerObserver = RCTPlayerObserver()
     
-#if canImport(RCTVideoCache)
-    private let _videoCache:RCTVideoCachingHandler = RCTVideoCachingHandler()
-#endif
+//#if canImport(RNCuvoPackageCache)
+//    private let _videoCache:RNCuvoPackageCachingHandler = RNCuvoPackageCachingHandler()
+//#endif
     
 #if TARGET_OS_IOS
     private let _pip:RCTPictureInPicture = RCTPictureInPicture(self.onPictureInPictureStatusChanged, self.onRestoreUserInterfaceForPictureInPictureStop)
@@ -128,9 +128,9 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
             object: nil
         )
         _playerObserver._handlers = self
-#if canImport(RCTVideoCache)
-        _videoCache.playerItemPrepareText = playerItemPrepareText
-#endif
+//#if canImport(RNCuvoPackageCache)
+//        _videoCache.playerItemPrepareText = playerItemPrepareText
+//#endif
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -188,7 +188,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
             return
         }
         
-        let playerDuration:CMTime = RCTVideoUtils.playerItemDuration(_player)
+        let playerDuration:CMTime = RNCuvoPackageUtils.playerItemDuration(_player)
         if CMTIME_IS_INVALID(playerDuration) {
             return
         }
@@ -198,18 +198,18 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         let duration = CMTimeGetSeconds(playerDuration)
         let currentTimeSecs = CMTimeGetSeconds(currentTime ?? .zero)
         
-        NotificationCenter.default.post(name: NSNotification.Name("RCTVideo_progress"), object: nil, userInfo: [
+        NotificationCenter.default.post(name: NSNotification.Name("RNCuvoPackage_progress"), object: nil, userInfo: [
             "progress": NSNumber(value: currentTimeSecs / duration)
         ])
         
         if currentTimeSecs >= 0 {
             onVideoProgress?([
                 "currentTime": NSNumber(value: Float(currentTimeSecs)),
-                "playableDuration": RCTVideoUtils.calculatePlayableDuration(_player),
+                "playableDuration": RNCuvoPackageUtils.calculatePlayableDuration(_player),
                 "atValue": NSNumber(value: currentTime?.value ?? .zero),
                 "currentPlaybackTime": NSNumber(value: NSNumber(value: floor(currentPlaybackTime?.timeIntervalSince1970 ?? 0 * 1000)).int64Value),
                 "target": reactTag,
-                "seekableDuration": RCTVideoUtils.calculateSeekableDuration(_player)
+                "seekableDuration": RNCuvoPackageUtils.calculateSeekableDuration(_player)
             ])
         }
     }
@@ -224,7 +224,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         _playerObserver.playerItem = nil
         
         // perform on next run loop, otherwise other passed react-props may not be set
-        RCTVideoUtils.delay()
+        RNCuvoPackageUtils.delay()
             .then{ [weak self] in
                 guard let self = self else {throw NSError(domain: "", code: 0, userInfo: nil)}
                 guard let source = self._source else {
@@ -233,23 +233,23 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
                 }
                 if let uri = source.uri, uri.starts(with: "ph://") {
                     return Promise {
-                        RCTVideoUtils.preparePHAsset(uri: uri).then { asset in
+                        RNCuvoPackageUtils.preparePHAsset(uri: uri).then { asset in
                             return self.playerItemPrepareText(asset:asset, assetOptions:nil)
                         }
                     }
                 }
-                guard let assetResult = RCTVideoUtils.prepareAsset(source: source),
+                guard let assetResult = RNCuvoPackageUtils.prepareAsset(source: source),
                       let asset = assetResult.asset,
                       let assetOptions = assetResult.assetOptions else {
                       DebugLog("Could not find video URL in source '\(self._source)'")
                       throw NSError(domain: "", code: 0, userInfo: nil)
                   }
                 
-#if canImport(RCTVideoCache)
-                if self._videoCache.shouldCache(source:source, textTracks:self._textTracks) {
-                    return self._videoCache.playerItemForSourceUsingCache(uri: source.uri, assetOptions:assetOptions)
-                }
-#endif
+//#if canImport(RNCuvoPackageCache)
+//                if self._videoCache.shouldCache(source:source, textTracks:self._textTracks) {
+//                    return self._videoCache.playerItemForSourceUsingCache(uri: source.uri, assetOptions:assetOptions)
+//                }
+//#endif
                 
                 if self._drm != nil || self._localSourceEncryptionKeyScheme != nil {
                     self._resouceLoaderDelegate = RCTResourceLoaderDelegate(
@@ -314,8 +314,8 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         
         // AVPlayer can't airplay AVMutableCompositions
         _allowsExternalPlayback = false
-        let mixComposition = RCTVideoUtils.generateMixComposition(asset)
-        let validTextTracks = RCTVideoUtils.getValidTextTracks(
+        let mixComposition = RNCuvoPackageUtils.generateMixComposition(asset)
+        let validTextTracks = RNCuvoPackageUtils.getValidTextTracks(
             asset:asset,
             assetOptions:assetOptions,
             mixComposition:mixComposition,
@@ -650,8 +650,8 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         _playerObserver.playerViewController = _playerViewController
     }
     
-    func createPlayerViewController(player:AVPlayer, withPlayerItem playerItem:AVPlayerItem) -> RCTVideoPlayerViewController {
-        let viewController = RCTVideoPlayerViewController()
+    func createPlayerViewController(player:AVPlayer, withPlayerItem playerItem:AVPlayerItem) -> RNCuvoPackagePlayerViewController {
+        let viewController = RNCuvoPackagePlayerViewController()
         viewController.showsPlaybackControls = true
         viewController.rctDelegate = self
         viewController.preferredOrientation = _fullscreenOrientation
@@ -714,7 +714,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         _playerObserver.playerLayer = nil
     }
     
-    // MARK: - RCTVideoPlayerViewControllerDelegate
+    // MARK: - RNCuvoPackagePlayerViewControllerDelegate
     
     func videoPlayerViewControllerWillDismiss(playerViewController:AVPlayerViewController) {
         if _playerViewController == playerViewController && _fullscreenPlayerPresented, let onVideoFullscreenPlayerWillDismiss = onVideoFullscreenPlayerWillDismiss {
@@ -843,7 +843,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     
     @objc
     func save(options:NSDictionary!, resolve: @escaping RCTPromiseResolveBlock, reject:@escaping RCTPromiseRejectBlock) {
-        RCTVideoSave.save(
+        RNCuvoPackageSave.save(
             options:options,
             resolve:resolve,
             reject:reject,
@@ -957,8 +957,8 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
                             "height": width != nil ? NSNumber(value: height!) : "undefinded",
                             "orientation": orientation
                           ],
-                          "audioTracks": RCTVideoUtils.getAudioTrackInfo(_player),
-                          "textTracks": _textTracks ?? RCTVideoUtils.getTextTrackInfo(_player),
+                          "audioTracks": RNCuvoPackageUtils.getAudioTrackInfo(_player),
+                          "textTracks": _textTracks ?? RNCuvoPackageUtils.getTextTrackInfo(_player),
                           "target": reactTag as Any])
         }
         _videoLoadStarted = false
