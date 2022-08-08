@@ -16,5 +16,13 @@ Pod::Spec.new do |s|
   s.source_files  = "ios/**/*.{h,m,swift}"
 
   s.dependency 'React'
+
+  s.subspec "VideoCaching" do |ss|
+    ss.dependency "cuvo-react-native-package/Video"
+    ss.dependency "SPTPersistentCache", "~> 1.1.0"
+    ss.dependency "DVAssetLoaderDelegate", "~> 0.3.1"
+
+    ss.source_files = "ios/VideoCaching/**/*.{h,m,swift}"
+  end
 end
 
