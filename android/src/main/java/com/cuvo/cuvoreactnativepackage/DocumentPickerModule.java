@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@ReactModule(name = DocumentPickerModule.NAME)
 public class DocumentPickerModule extends ReactContextBaseJavaModule {
   public static final String NAME = "CuvoDocumentPicker";
   private static final int READ_REQUEST_CODE = 41;

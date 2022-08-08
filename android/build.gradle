@@ -16,12 +16,12 @@ def safeExtGet(prop, fallback) {
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion safeExtGet('compileSdkVersion', 29)
+  compileSdkVersion safeExtGet('compileSdkVersion', 31)
   buildToolsVersion safeExtGet('buildToolsVersion', '29.0.2')
 
   defaultConfig {
     minSdkVersion safeExtGet('minSdkVersion', 16)
-    targetSdkVersion safeExtGet('targetSdkVersion', 29)
+    targetSdkVersion safeExtGet('targetSdkVersion', 31)
   }
 }
 
@@ -35,4 +35,18 @@ dependencies {
   //noinspection GradleDynamicVersion
 //  implementation 'com.facebook.react:react-native:+'
   implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
+  implementation('com.google.android.exoplayer:exoplayer:2.17.1') {
+    exclude group: 'com.android.support'
+  }
+//  implementation 'com.yqritc:android-scalablevideoview:1.0.4'
+  implementation 'com.github.MatrixFrog:android-scalablevideoview:v1.0.4-jitpack'
+  // All support libs must use the same version
+  implementation "androidx.annotation:annotation:1.1.0"
+  implementation "androidx.core:core:1.1.0"
+  implementation "androidx.media:media:1.1.0"
+
+  implementation('com.google.android.exoplayer:extension-okhttp:2.17.1') {
+    exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+  }
+  implementation ('com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}')
 }

@@ -19,6 +19,8 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.PermissionChecker;
+
+import androidx.core.app.ActivityCompat;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
