@@ -13,9 +13,23 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "9.0"
 
   s.source       = { :git => "https://github.com/sivachandiran/cuvo-react-native-package.git", :tag => "v#{s.version}" }
-  s.source_files  = "ios/**/*.{h,m,swift}"
+  
+  s.subspec "Video" do |ss|
+    ss.source_files  = "ios/Video/**/*.{h,m,swift}"
+    ss.dependency "PromisesSwift"
+  end
 
-  s.dependency 'React'
+  s.subspec "VideoCaching" do |ss|
+    ss.dependency "react-native-video/Video"
+    ss.dependency "SPTPersistentCache", "~> 1.1.0"
+    ss.dependency "DVAssetLoaderDelegate", "~> 0.3.1"
+
+    ss.source_files = "ios/VideoCaching/**/*.{h,m,swift}"
+  end
+
+  s.dependency "React-Core"
+
+  s.default_subspec = "Video"
 
   s.subspec "VideoCaching" do |ss|
     ss.dependency "cuvo-react-native-package/Video"
