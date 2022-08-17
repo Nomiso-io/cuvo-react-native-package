@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
+import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
@@ -29,9 +30,12 @@ import androidx.annotation.RequiresApi;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileDescriptor;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -94,8 +98,6 @@ public class ScreenRecordService extends Service {
         if (intent != null && intent.getAction() != null){
             isAction = true;
         }
-        Log.w("TAG", "onStartCommand -------------- : " + isAction);
-
         //If there was an action, check what action it was
         //Called when recording should be paused or resumed
         if (isAction){
@@ -114,8 +116,6 @@ public class ScreenRecordService extends Service {
         }
         //Start Recording
         else {
-            Log.w("TAG", "Start Recording -------------- : ");
-
             //Get intent extras
             hasMaxFileBeenReached = false;
             mIntent = intent;
@@ -216,16 +216,13 @@ public class ScreenRecordService extends Service {
                             Icon.createWithResource(this, android.R.drawable.presence_video_online),
                             notificationButtonText,
                             pendingIntent).build();
-
                     if (notificationSmallIcon != null) {
                         Bitmap bmp = BitmapFactory.decodeByteArray(notificationSmallIcon, 0, notificationSmallIcon.length);
                         //Modify notification badge
                         notification = new Notification.Builder(getApplicationContext(), channelId).setOngoing(true).setSmallIcon(Icon.createWithBitmap(bmp)).setContentTitle(notificationTitle).setContentText(notificationDescription).addAction(action).build();
-
                     } else if (notificationSmallVector != 0){
                         notification = new Notification.Builder(getApplicationContext(), channelId).setOngoing(true).setSmallIcon(notificationSmallVector).setContentTitle(notificationTitle).setContentText(notificationDescription).addAction(action).build();
                     }
-
                     else {
                         //Modify notification badge
                         notification = new Notification.Builder(getApplicationContext(), channelId).setOngoing(true).setSmallIcon(notificationSmallVector).setContentTitle(notificationTitle).setContentText(notificationDescription).addAction(action).build();
@@ -236,21 +233,15 @@ public class ScreenRecordService extends Service {
             } else {
                 startForeground(101, new Notification());
             }
-
-
             if (returnedUri == null) {
                 if (path == null) {
                     path = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES));
-                    Log.w("TAG", "pathRecording -------------- : " + path);
                 }
             }
-
             //Init MediaRecorder
             try {
                 initRecorder();
-                Log.w("TAG", "initRecorder -------------- : ");
             } catch (Exception e) {
-                Log.w("TAG", "initRecorder Exception -------------- : " + e);
                 ResultReceiver receiver = intent.getParcelableExtra(ScreenRecordService.BUNDLED_LISTENER);
                 Bundle bundle = new Bundle();
                 bundle.putString(ERROR_REASON_KEY, Log.getStackTraceString(e));
@@ -258,13 +249,10 @@ public class ScreenRecordService extends Service {
                     receiver.send(Activity.RESULT_OK, bundle);
                 }
             }
-
             //Init MediaProjection
             try {
-                Log.w("TAG", "initMediaProjection -------------- : ");
                 initMediaProjection();
             } catch (Exception e) {
-                Log.w("TAG", "initMediaProjection Exception -------------- : " + e);
                 ResultReceiver receiver = intent.getParcelableExtra(ScreenRecordService.BUNDLED_LISTENER);
                 Bundle bundle = new Bundle();
                 bundle.putString(ERROR_REASON_KEY, Log.getStackTraceString(e));
@@ -272,13 +260,10 @@ public class ScreenRecordService extends Service {
                     receiver.send(Activity.RESULT_OK, bundle);
                 }
             }
-
             //Init VirtualDisplay
             try {
                 initVirtualDisplay();
-                Log.w("TAG", "initVirtualDisplay -------------- : ");
             } catch (Exception e) {
-                Log.w("TAG", "initVirtualDisplay Exception -------------- : " + e);
                 ResultReceiver receiver = intent.getParcelableExtra(ScreenRecordService.BUNDLED_LISTENER);
                 Bundle bundle = new Bundle();
                 bundle.putString(ERROR_REASON_KEY, Log.getStackTraceString(e));
@@ -320,10 +305,8 @@ public class ScreenRecordService extends Service {
                     }
                 }
             });
-
             //Start Recording
             try {
-                Log.w("TAG", "Start Recording -------------- : ");
                 mMediaRecorder.start();
                 ResultReceiver receiver = intent.getParcelableExtra(ScreenRecordService.BUNDLED_LISTENER);
                 Bundle bundle = new Bundle();
@@ -332,7 +315,6 @@ public class ScreenRecordService extends Service {
                     receiver.send(Activity.RESULT_OK, bundle);
                 }
             } catch (Exception e) {
-                Log.w("TAG", "Exception Start Recording -------------- : " + e);
                 // From the tests I've done, this can happen if another application is using the mic or if an unsupported video encoder was selected
                 ResultReceiver receiver = intent.getParcelableExtra(ScreenRecordService.BUNDLED_LISTENER);
                 Bundle bundle = new Bundle();
@@ -343,8 +325,6 @@ public class ScreenRecordService extends Service {
                 }
             }
         }
-
-
         return Service.START_STICKY;
     }
 
@@ -476,7 +456,6 @@ public class ScreenRecordService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initRecorder() throws Exception {
-        Log.w("TAG", "initRecorder initRecorder -------------- : ");
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault());
         Date curDate = new Date(System.currentTimeMillis());
@@ -488,71 +467,44 @@ public class ScreenRecordService extends Service {
         if (name == null) {
             name = videoQuality + curTime;
         }
-
+        path = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES));
         filePath = path + "/" + name + ".mp4";
-
         fileName = name + ".mp4";
 
         mMediaRecorder = new MediaRecorder();
 
+        // state = mounted or unmounted
+        String state = Environment.getExternalStorageState();
+        Log.d(TAG, state);
 
-        if (isAudioEnabled) {
-            mMediaRecorder.setAudioSource(audioSourceAsInt);
+        Context ctx = this.getApplicationContext();
+        File audioDir = new File(ctx.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "AudioMemos");
+        audioDir.mkdirs();
+        String audioDirPath = audioDir.getAbsolutePath();
+
+        CamcorderProfile camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+
+       mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+       mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
+       mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+       mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+       mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+//        mediaRecorder.setVideoEncodingBitRate(1024 * 1000);
+        mMediaRecorder.setVideoEncodingBitRate(camcorderProfile.videoBitRate);
+//        mediaRecorder.setVideoFrameRate(30);
+        mMediaRecorder.setVideoFrameRate(camcorderProfile.videoFrameRate);
+
+//        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+//        mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        mMediaRecorder.setVideoSize(1080, 1920);
+//        mediaRecorder.setVideoSize(camcorderProfile.videoFrameWidth, camcorderProfile.videoFrameHeight);
+        mMediaRecorder.setOutputFile(filePath);
+
+        try {
+            mMediaRecorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-        mMediaRecorder.setOutputFormat(outputFormatAsInt);
-
-        if (orientationHint != 400){
-            mMediaRecorder.setOrientationHint(orientationHint);
-        }
-
-        if (isAudioEnabled) {
-            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-            mMediaRecorder.setAudioEncodingBitRate(audioBitrate);
-            mMediaRecorder.setAudioSamplingRate(audioSamplingRate);
-        }
-
-        mMediaRecorder.setVideoEncoder(videoEncoderAsInt);
-
-
-        if (returnedUri != null) {
-            try {
-                ContentResolver contentResolver = getContentResolver();
-                FileDescriptor inputPFD = Objects.requireNonNull(contentResolver.openFileDescriptor(returnedUri, "rw")).getFileDescriptor();
-                mMediaRecorder.setOutputFile(inputPFD);
-            } catch (Exception e) {
-                ResultReceiver receiver = mIntent.getParcelableExtra(ScreenRecordService.BUNDLED_LISTENER);
-                Bundle bundle = new Bundle();
-                bundle.putString(ERROR_REASON_KEY, Log.getStackTraceString(e));
-                if (receiver != null) {
-                    receiver.send(Activity.RESULT_OK, bundle);
-                }
-            }
-        }else{
-            mMediaRecorder.setOutputFile(filePath);
-        }
-        mMediaRecorder.setVideoSize(mScreenWidth, mScreenHeight);
-
-        if (!isCustomSettingsEnabled) {
-            if (!isVideoHD) {
-                mMediaRecorder.setVideoEncodingBitRate(12000000);
-                mMediaRecorder.setVideoFrameRate(30);
-            } else {
-                mMediaRecorder.setVideoEncodingBitRate(5 * mScreenWidth * mScreenHeight);
-                mMediaRecorder.setVideoFrameRate(60); //after setVideoSource(), setOutFormat()
-            }
-        } else {
-            mMediaRecorder.setVideoEncodingBitRate(videoBitrate);
-            mMediaRecorder.setVideoFrameRate(videoFrameRate);
-        }
-
-        // Catch approaching file limit
-        if ( maxFileSize > NO_SPECIFIED_MAX_SIZE) {
-            mMediaRecorder.setMaxFileSize(maxFileSize); // in bytes
-        }
-
-        mMediaRecorder.prepare();
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

@@ -136,6 +136,8 @@ RCT_EXPORT_METHOD(startRecorder:(NSString*)path
   NSNumber *audioQuality = [RCTConvert NSNumber:audioSets[@"AVEncoderAudioQualityKeyIOS"]];
   _meteringEnabled = meteringEnabled;
 
+    NSLog(@"startRecorder --------------------%@",path);
+    
   if ([path isEqualToString:@"DEFAULT"]) {
       audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_Sound(NSCachesDirectory) stringByAppendingString:@"sound.m4a"]];
   } else {

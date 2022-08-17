@@ -116,6 +116,7 @@ public class CuvoAudioRecorderPlayerModule extends ReactContextBaseJavaModule im
       mediaRecorder.setAudioEncodingBitRate(128000);
       mediaRecorder.setAudioSamplingRate(48000);
     }
+    Log.d(TAG, "audioFileURLaudioFileURLaudioFileURL" + audioFileURL);
 
     mediaRecorder.setOutputFile(audioFileURL);
 

@@ -12,14 +12,9 @@ Pod::Spec.new do |s|
   s.homepage     = package['homepage']
   s.platform     = :ios, "9.0"
 
-  s.source       = { :git => "https://github.com/sivachandiran/cuvo-react-native-package.git", :tag => "v#{s.version}" }
-  
-  s.subspec "Video" do |ss|
-    ss.source_files  = "ios/Video/**/*.{h,m,swift}"
-    ss.dependency "PromisesSwift"
-  end
+  s.source       = { :git => "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/cuvo-react-native-package", :tag => "v#{s.version}" }
+  s.source_files  = "ios/**/*.{h,m,swift}"
 
   s.dependency 'React'
-
 end
 

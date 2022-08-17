@@ -52,9 +52,10 @@ RCT_EXPORT_METHOD(stopScreenRecording:(NSString *)option callback:(RCTResponseSe
 }
 
 -(void) stopVideoRecorder:(NSString *)options callback:(RCTResponseSenderBlock)callback {
-
     self.callback = callback;
-    self.callback(@[@"teknnkdfkndfkdkffdknknfdkndfkfkdnkfndknfdknfdkndfknfdk"]);
+    [screenRecorder stopRecording:^(NSString *output) {
+        self.callback(@[output]);
+    }];
 //    [screenRecorder stopRecording:^(NSString *output) {
 //        self.callback(@[output]);
 //    }];

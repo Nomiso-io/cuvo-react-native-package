@@ -1,20 +1,35 @@
 package com.cuvo.cuvoreactnativepackage;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.CamcorderProfile;
+import android.media.MediaScannerConnection;
 import android.media.projection.MediaProjectionManager;
+import android.content.Context;
+import android.content.ContentResolver;
+
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.media.MediaRecorder;
 import android.media.projection.MediaProjection;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Surface;
@@ -33,6 +48,7 @@ import com.facebook.react.bridge.ReactMethod;
 
 import com.facebook.react.bridge.Callback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -43,26 +59,22 @@ import java.util.Locale;
 
 import javax.annotation.Nullable;
 
-public class ScreenRecordingModule extends ReactContextBaseJavaModule {
+public class ScreenRecordingModule extends ReactContextBaseJavaModule implements HBRecorderListener {
 
     public static final String NAME = "ScreenRecordingPackage";
-    private static final int CAST_PERMISSION_CODE = 22;
-    private DisplayMetrics mDisplayMetrics;
-    private MediaProjection mMediaProjection;
-    private VirtualDisplay mVirtualDisplay;
-    private MediaRecorder mMediaRecorder;
-    private MediaProjectionManager mProjectionManager;
+    private static final int SCREEN_RECORD_REQUEST_CODE = 100;
+    private static final int PERMISSION_REQ_ID_RECORD_AUDIO = 101;
+    private static final int PERMISSION_REQ_ID_WRITE_EXTERNAL_STORAGE = 102;
+    HBRecorder hbRecorder;
+    boolean hasPermissions;
     private Activity activity;
-    private  String filePath;
-    private int mScreenDensity;
-    private Surface mSurface;
-    private SurfaceView mSurfaceView;
-    private static final String TEMP_FILE_PREFIX = "ReactNative-ScreenRecord-video";
-    public static final String videoFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/MediaProjection.mp4";
     private ReactContext mReactContext;
     private ReactRootView mReactRootView;
-    
-    Callback callback;
+    private static final int CAST_PERMISSION_CODE = 22;
+    ContentValues contentValues;
+    ContentResolver resolver;
+
+    Uri mUri;
 
     @NonNull
     @Override
@@ -73,40 +85,23 @@ public class ScreenRecordingModule extends ReactContextBaseJavaModule {
     private final ActivityEventListener activityEventListener = new BaseActivityEventListener() {
         @Override
         public void onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
-            if (requestCode != CAST_PERMISSION_CODE) {
-                // Where did we get this request from ? -_-
-                Log.w("TAG", "Unknown request code: " + requestCode);
-                return;
-            }
-            if (resultCode != activity.RESULT_OK) {
-                //Toast.makeText(activity, "Screen Cast Permission Denied :(", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Log.w("TAG", "resultCode --------------: " + resultCode);
-            Log.w("TAG", "requestCode --------------: " + requestCode);
-            Log.w("TAG", "data --------------: " + data);
-
-            mMediaProjection = mProjectionManager.getMediaProjection(resultCode, data);
-            // TODO Register a callback that will listen onStop and release & prepare the recorder for next recording
-            // mMediaProjection.registerCallback(callback, null);
-
-//        Toast.makeText(activity, "getVirtualDisplay :(", Toast.LENGTH_SHORT).show();
-
-            DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
-//            mMediaProjection.createVirtualDisplay(
-//                    "sample",
-//                    1080, 1920, displayMetrics.densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-//                    mMediaRecorder.getSurface(), null, null);
-
-            mVirtualDisplay = getVirtualDisplay();
-            mMediaRecorder.start();
+           if (requestCode == SCREEN_RECORD_REQUEST_CODE) {
+               if (resultCode == activity.RESULT_OK) {
+                   //Start screen recording
+                    setOutputPath();
+                    hbRecorder.startScreenRecording(data, resultCode);
+               }
+           }
         }
     };
+
+
     public ScreenRecordingModule(ReactApplicationContext reactContext) {
         super(reactContext);
         mReactContext = reactContext;
         mReactRootView = new ReactRootView(reactContext);
         reactContext.addActivityEventListener(activityEventListener);
+
     }
     @Override
     public void onCatalystInstanceDestroy() {
@@ -117,180 +112,113 @@ public class ScreenRecordingModule extends ReactContextBaseJavaModule {
     public void startRecording(String input) {
         activity = mReactContext.getCurrentActivity();
 
-        mDisplayMetrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
-        mScreenDensity = mDisplayMetrics.densityDpi;
-
-        mMediaRecorder = createRecorder();
-
-        mProjectionManager = (MediaProjectionManager) activity.getSystemService
-                (Context.MEDIA_PROJECTION_SERVICE);
-
-
-//        prepareRecording();
+        hbRecorder = new HBRecorder(activity, this);
+        hbRecorder.setVideoEncoder("H264");
         startScreenRecording("");
     }
-    private MediaRecorder createRecorder() {
 
-        CamcorderProfile camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
-        MediaRecorder mediaRecorder = new MediaRecorder();
-//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-//        mediaRecorder.setVideoEncodingBitRate(1024 * 1000);
-        mediaRecorder.setVideoEncodingBitRate(camcorderProfile.videoBitRate);
-//        mediaRecorder.setVideoFrameRate(30);
-        mediaRecorder.setVideoFrameRate(camcorderProfile.videoFrameRate);
-
-//        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
-
-//        mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        mediaRecorder.setVideoSize(1080, 1920);
-//        mediaRecorder.setVideoSize(camcorderProfile.videoFrameWidth, camcorderProfile.videoFrameHeight);
-        mediaRecorder.setOutputFile(videoFile);
-
-        try {
-            mediaRecorder.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.w("TAG", "ExceptionExceptionException --------------: " + e);
-        }
-        return mediaRecorder;
-    }
     private void startScreenRecording(String input) {
-        // If mMediaProjection is null that means we didn't get a context, lets ask the user
-        if (mMediaProjection == null) {
-            // This asks for user permissions to capture the screen
-            View v1 = activity.getWindow().getDecorView().getRootView();
-            MediaProjectionManager mediaProjectionManager = (MediaProjectionManager)  v1.getContext().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-            activity.startActivityForResult(mProjectionManager.createScreenCaptureIntent(), CAST_PERMISSION_CODE);
-            return;
-        }
-        mVirtualDisplay = getVirtualDisplay();
-        mMediaRecorder.start();
+        View v1 = activity.getWindow().getDecorView().getRootView();
+        MediaProjectionManager mediaProjectionManager = (MediaProjectionManager)  v1.getContext().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+        Intent permissionIntent = mediaProjectionManager != null ? mediaProjectionManager.createScreenCaptureIntent() : null;
+       activity.startActivityForResult(permissionIntent, SCREEN_RECORD_REQUEST_CODE);
     }
 
     @ReactMethod
     public void stopRecording(final Callback callback) {
-        if (mMediaRecorder != null) {
-            mMediaRecorder.stop();
-            mMediaRecorder.reset();
-        }
-        if (mVirtualDisplay != null) {
-            mVirtualDisplay.release();
-        }
-        if (mMediaProjection != null) {
-            mMediaProjection.stop();
-        }
-        prepareRecording();
-        callback.invoke(filePath);
+        hbRecorder.stopScreenRecording();
+
+        callback.invoke("file://"+hbRecorder.getFilePath());
     }
 
-    public String getCurSysDate() {
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void setOutputPath() {
+        String filename = generateFileName();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            resolver = activity.getContentResolver();
+            contentValues = new ContentValues();
+            contentValues.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies");
+            contentValues.put(MediaStore.Video.Media.TITLE, filename);
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
+            mUri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues);
+            //FILE NAME SHOULD BE THE SAME
+            hbRecorder.setFileName(filename);
+            hbRecorder.setOutputUri(mUri);
+        }else{
+            createFolder();
+            hbRecorder.setOutputPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) +"/HBRecorder");
+        }
+    }
+    //Check if permissions was granted
+    private boolean checkSelfPermission(String permission, int requestCode) {
+        if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+            return false;
+        }
+        return true;
+    }
+    private void updateGalleryUri(){
+        contentValues.clear();
+        contentValues.put(MediaStore.Video.Media.IS_PENDING, 0);
+        //getContentResolver().update(mUri, contentValues, null, null);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void refreshGalleryFile() {
+        MediaScannerConnection.scanFile(activity,
+                new String[]{hbRecorder.getFilePath()}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+    }
+    //Generate a timestamp to be used as a file name
+    private String generateFileName() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault());
         Date curDate = new Date(System.currentTimeMillis());
         return formatter.format(curDate).replace(" ", "");
     }
-
-    private void prepareRecording() {
-        try {
-            final String directory = Environment.getExternalStorageDirectory() + File.separator + "Recordings";
-            if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                return;
+    //drawable to byte[]
+//    private byte[] drawable2ByteArray(@DrawableRes int drawableId) {
+//        Bitmap icon = BitmapFactory.decodeResource(getResources(), drawableId);
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        icon.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//        return stream.toByteArray();
+//    }
+    //Create Folder
+    //Only call this on Android 9 and lower (getExternalStoragePublicDirectory is deprecated)
+    //This can still be used on Android 10> but you will have to add android:requestLegacyExternalStorage="true" in your Manifest
+    private void createFolder() {
+        File f1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), "SpeedTest");
+        if (!f1.exists()) {
+            if (f1.mkdirs()) {
+                Log.i("Folder ", "created");
             }
-            String videoName = ("capture_" + getCurSysDate());
-            File outputFile = null;
-            outputFile = createTempFile(getReactApplicationContext(), "mp4", videoName);
-            FileOutputStream fos;
-            filePath = outputFile.toString();
-
-            try {
-                fos = new FileOutputStream(outputFile);
-                int width = mDisplayMetrics.widthPixels;
-                int height = mDisplayMetrics.heightPixels;
-
-//                 mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//                 mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-//                 mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-//                 mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-//                 mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//                 mMediaRecorder.setVideoEncodingBitRate(512 * 1000);
-//                 mMediaRecorder.setVideoSize(width, height);
-//                 mMediaRecorder.setVideoFrameRate(30);
-//                 mMediaRecorder.setOutputFile(filePath);
-
-                mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-                mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-                mMediaRecorder.setVideoFrameRate(30);
-                mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-                mMediaRecorder.setVideoSize(width, height);
-                mMediaRecorder.setVideoEncodingBitRate(512 * 1000);
-                mMediaRecorder.setOutputFile(filePath);
-
-                try {
-                    mMediaRecorder.prepare();
-                    Log.w("TAG", "prepare --------------: " + filePath);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.w("TAG", "ExceptionExceptionException --------------: " + e);
-                    return;
-                }
-                mSurface = mMediaRecorder.getSurface();
-
-                fos.flush();
-                fos.close();
-            } catch (FileNotFoundException e) {
-                callback.invoke(e.getMessage());
-            } catch (IOException e) {
-                callback.invoke("IOException");
-            }
-
-        } catch (Throwable e) {
-            // Several error may come out with file handling or DOM
-            // System.out.print("Take photo failed");
-            e.printStackTrace();
         }
-
-
     }
 
-    @NonNull
-    private File createTempFile(@NonNull final Context context, @NonNull final String ext, String fileName) throws IOException {
-        final File externalCacheDir = context.getExternalCacheDir();
-        final File internalCacheDir = context.getCacheDir();
-        final File cacheDir;
-
-        if (externalCacheDir == null && internalCacheDir == null) {
-            throw new IOException("No cache directory available");
-        }
-
-        if (externalCacheDir == null) {
-            cacheDir = internalCacheDir;
-        } else if (internalCacheDir == null) {
-            cacheDir = externalCacheDir;
-        } else {
-            cacheDir = externalCacheDir.getFreeSpace() > internalCacheDir.getFreeSpace() ?
-                    externalCacheDir : internalCacheDir;
-        }
-
-        final String suffix = "." + ext;
-        if (fileName != null) {
-            return File.createTempFile(fileName, suffix, cacheDir);
-        }
-        return File.createTempFile(TEMP_FILE_PREFIX, suffix, cacheDir);
+    @Override
+    public void HBRecorderOnStart() {
+        //Toast.makeText(activity, "Started", Toast.LENGTH_SHORT).show();
     }
-    private VirtualDisplay getVirtualDisplay() {
-        int width = mDisplayMetrics.widthPixels;
-        int height = mDisplayMetrics.heightPixels;
-        Log.w("TAG", "width --------------: " + width);
-        if (mMediaRecorder.getSurface().isValid()){  // get surface again
-            Log.w("Notice","Surface holder is valid");
+
+    @Override
+    public void HBRecorderOnComplete() {
+        //Toast.makeText(activity, "Completed", Toast.LENGTH_SHORT).show();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //Update gallery depending on SDK Level
+//            if (hbRecorder.wasUriSet()) {
+//                updateGalleryUri();
+//            }else{
+//                refreshGalleryFile();
+//            }
         }
-        else {
-            Log.w("Notice","Surface holder ISNOT valid");  //Always receive this
-        }
-        return mMediaProjection.createVirtualDisplay(NAME, width, height, mScreenDensity, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, mMediaRecorder.getSurface(), null, null);
+    }
+
+    @Override
+    public void HBRecorderOnError(int errorCode, String reason) {
+        //Toast.makeText(activity, errorCode+": "+reason, Toast.LENGTH_SHORT).show();
     }
 }
