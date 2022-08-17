@@ -15,7 +15,7 @@ export function takeCamera(options: String, callback: Callback) {
   callback);
 }
 export function startScreenRecording(options: String ) {
-  if(Platform.OS ='ios') {
+  if(Platform.OS =='ios') {
     NativeModules.CuvoRecordingPackage.startRecording('');
   }
   else {
@@ -23,7 +23,7 @@ export function startScreenRecording(options: String ) {
   }
 }
 export function stopVideoRecording(callback: Callback) {
-  if(Platform.OS ='ios') {
+  if(Platform.OS =='ios') {
     NativeModules.CuvoRecordingPackage.stopScreenRecording('', callback);
   }
   else {
@@ -65,7 +65,7 @@ export async function stopAudioRecording () {
 export async function startAudioPlay (audioPath: String) {
   let myRecord: Record<string, string> = {};
   myRecord["key"] = ""; 
-  if(Platform.OS ='ios') {
+  if(Platform.OS == 'ios') {
     NativeModules.CuvoAudioRecorderPlayer.startPlayer('DEFAULT').then(audioDetail => {
     })
   }
