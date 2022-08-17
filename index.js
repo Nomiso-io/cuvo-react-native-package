@@ -15,12 +15,20 @@ export function takeCamera(options: String, callback: Callback) {
   callback);
 }
 export function startScreenRecording(options: String ) {
-  NativeModules.ScreenRecordingPackage.startRecording('');
-  //NativeModules.CuvoRecordingPackage.startRecording('');
+  if(Platform.OS ='ios') {
+    NativeModules.CuvoRecordingPackage.startRecording('');
+  }
+  else {
+    NativeModules.ScreenRecordingPackage.startRecording('');
+  }
 }
 export function stopVideoRecording(callback: Callback) {
-  NativeModules.ScreenRecordingPackage.stopRecording(callback);
-  //NativeModules.CuvoRecordingPackage.stopScreenRecording('', callback);
+  if(Platform.OS ='ios') {
+    NativeModules.CuvoRecordingPackage.stopScreenRecording('', callback);
+  }
+  else {
+    NativeModules.ScreenRecordingPackage.stopRecording(callback);
+  }
 }
 export function createAudioPlayer() {
     return new AudioRecorderPlayer();
@@ -31,7 +39,13 @@ export async function startAudioRecording () {
   audioRecorderPlayer.startRecorder('DEFAULT', param, false).then(audioDetail => {
       audioPath = audioDetail
     })
-
+    audioRecorderPlayer.addRecordBackListener((e) => {
+      // console.log('audioRecorderPlayer --------',audioRecorderPlayer.mmssss(
+      //   Math.floor(e.current_position),
+      // ));
+      audioDuration = e.current_position;
+    return;
+    });
   // NativeModules.CuvoAudioRecorderPlayer.startRecorder( 'DEFAULT', false, param).then(audioDetail => {
   //   audioPath = audioDetail
   // })
@@ -39,8 +53,11 @@ export async function startAudioRecording () {
 export async function stopAudioRecording () {
   audioRecorderPlayer.stopRecorder().then(audioDetail => {
   })
-  return audioPath;
-
+  var param = {
+    audioPath: audioPath,
+    audioDuration: audioDuration,
+  }
+  return param;
   // NativeModules.CuvoAudioRecorderPlayer.stopRecorder().then(audioDetail => {
   // })
   // return audioPath;
@@ -48,8 +65,14 @@ export async function stopAudioRecording () {
 export async function startAudioPlay (audioPath: String) {
   let myRecord: Record<string, string> = {};
   myRecord["key"] = ""; 
-  NativeModules.CuvoAudioRecorderPlayer.startPlayer('DEFAULT' , myRecord).then(audioDetail => {
-  })
+  if(Platform.OS ='ios') {
+    NativeModules.CuvoAudioRecorderPlayer.startPlayer('DEFAULT').then(audioDetail => {
+    })
+  }
+  else {
+    NativeModules.CuvoAudioRecorderPlayer.startPlayer('DEFAULT' , myRecord).then(audioDetail => {
+    })
+  }
   return '';
 }
 export async function stopAudioPlay () {

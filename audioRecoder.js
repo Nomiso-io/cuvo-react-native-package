@@ -228,7 +228,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                     if (Platform.OS === 'android') {
                         return [2 /*return*/, CuvoAudioRecorderPlayer.startPlayer(uri, httpHeaders)];
                     }
-                    return [2 /*return*/, CuvoAudioRecorderPlayer.startPlayer(uri)];
+                    return [2 /*return*/, CuvoAudioRecorderPlayer.startPlayer(uri, '')];
                 }
                 return [2 /*return*/];
             });
