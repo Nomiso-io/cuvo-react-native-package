@@ -167,6 +167,7 @@ CVReturn CVPixelBufferCreateWithIOSurface(
          {
              [self finishBackgroundTask];
              [self restartRecordingIfNeeded];
+             self.writer = nil;
             completionHandler(self.VideoOutputPath);
          }];
     });

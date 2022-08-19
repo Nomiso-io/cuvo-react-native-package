@@ -484,11 +484,11 @@ public class ScreenRecordService extends Service {
 
         CamcorderProfile camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
 
-       mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-       mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-       mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-       mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-       mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 //        mediaRecorder.setVideoEncodingBitRate(1024 * 1000);
         mMediaRecorder.setVideoEncodingBitRate(camcorderProfile.videoBitRate);
 //        mediaRecorder.setVideoFrameRate(30);

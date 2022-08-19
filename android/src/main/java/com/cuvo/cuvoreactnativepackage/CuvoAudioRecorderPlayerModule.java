@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,6 +34,7 @@ import com.facebook.react.modules.core.PermissionListener;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +45,7 @@ import javax.annotation.Nullable;
 
 public class CuvoAudioRecorderPlayerModule extends ReactContextBaseJavaModule implements PermissionListener{
   final private static String TAG = "CuvoAudioRecorderPlayer";
-  final private static String FILE_LOCATION = "sdcard/sound.mp4";
+  final private static String FILE_LOCATION = "sdcard/sound.mp3";
   private String audioFileURL = "";
 
   private int subsDurationMillis = 100;
@@ -66,6 +68,29 @@ public class CuvoAudioRecorderPlayerModule extends ReactContextBaseJavaModule im
   @Override
   public String getName() {
     return TAG;
+  }
+
+  private String getFilename() {
+
+   Activity activity = this.reactContext.getCurrentActivity();
+
+    String audioFile ;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD_MR1) {
+      audioFile = activity.getExternalFilesDir
+              (Environment.DIRECTORY_MOVIES) + "/" + "AudioSounds" + ".mp3";
+    }
+    else
+    {
+
+      audioFile = Environment.getExternalStorageDirectory().toString() +  "/AudioSounds" + ".mp3";
+    }
+
+//    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) +"/Sounds");
+//
+//    if (!file.exists()) {
+//      file.mkdirs();
+//    }
+    return audioFile;
   }
 
   @ReactMethod
@@ -91,7 +116,7 @@ public class CuvoAudioRecorderPlayerModule extends ReactContextBaseJavaModule im
       return;
     }
 
-    audioFileURL = (path.equals("DEFAULT")) ? FILE_LOCATION : path;
+    audioFileURL = (path.equals("DEFAULT")) ? getFilename() : path;
     _meteringEnabled = meteringEnabled;
 
     if (mediaRecorder == null) {
@@ -150,7 +175,7 @@ public class CuvoAudioRecorderPlayerModule extends ReactContextBaseJavaModule im
       };
       this.recorderRunnable.run();
 
-      promise.resolve("file:///" + audioFileURL);
+      promise.resolve("file://" + audioFileURL);
     } catch (Exception e) {
       Log.e(TAG, "Exception: ", e);
       promise.reject("startRecord", e.getMessage());
@@ -176,7 +201,7 @@ public class CuvoAudioRecorderPlayerModule extends ReactContextBaseJavaModule im
     mediaRecorder.release();
     mediaRecorder = null;
 
-    promise.resolve("file:///" + audioFileURL);
+    promise.resolve("file://" + audioFileURL);
   }
 
   @ReactMethod
@@ -210,7 +235,7 @@ public class CuvoAudioRecorderPlayerModule extends ReactContextBaseJavaModule im
     }
     try {
       if (path.equals("DEFAULT")) {
-        mediaPlayer.setDataSource(FILE_LOCATION);
+        mediaPlayer.setDataSource(getFilename());
       } else {
         if (httpHeaders != null) {
           Map headers = new HashMap();
@@ -247,7 +272,7 @@ public class CuvoAudioRecorderPlayerModule extends ReactContextBaseJavaModule im
           mTimer = new Timer();
           mTimer.schedule(mTask, 0, subsDurationMillis);
 
-          String resolvedPath = (path.equals("DEFAULT")) ? "file:///" + FILE_LOCATION : path;
+          String resolvedPath = (path.equals("DEFAULT")) ? "file:///" + getFilename() : path;
           promise.resolve(resolvedPath);
         }
       });

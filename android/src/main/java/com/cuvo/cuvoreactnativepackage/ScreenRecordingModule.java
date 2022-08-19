@@ -85,13 +85,13 @@ public class ScreenRecordingModule extends ReactContextBaseJavaModule implements
     private final ActivityEventListener activityEventListener = new BaseActivityEventListener() {
         @Override
         public void onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
-           if (requestCode == SCREEN_RECORD_REQUEST_CODE) {
-               if (resultCode == activity.RESULT_OK) {
-                   //Start screen recording
+            if (requestCode == SCREEN_RECORD_REQUEST_CODE) {
+                if (resultCode == activity.RESULT_OK) {
+                    //Start screen recording
                     setOutputPath();
                     hbRecorder.startScreenRecording(data, resultCode);
-               }
-           }
+                }
+            }
         }
     };
 
@@ -121,7 +121,7 @@ public class ScreenRecordingModule extends ReactContextBaseJavaModule implements
         View v1 = activity.getWindow().getDecorView().getRootView();
         MediaProjectionManager mediaProjectionManager = (MediaProjectionManager)  v1.getContext().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
         Intent permissionIntent = mediaProjectionManager != null ? mediaProjectionManager.createScreenCaptureIntent() : null;
-       activity.startActivityForResult(permissionIntent, SCREEN_RECORD_REQUEST_CODE);
+        activity.startActivityForResult(permissionIntent, SCREEN_RECORD_REQUEST_CODE);
     }
 
     @ReactMethod
@@ -134,22 +134,32 @@ public class ScreenRecordingModule extends ReactContextBaseJavaModule implements
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setOutputPath() {
         String filename = generateFileName();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            resolver = activity.getContentResolver();
-            contentValues = new ContentValues();
-            contentValues.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies");
-            contentValues.put(MediaStore.Video.Media.TITLE, filename);
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
-            mUri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues);
-            //FILE NAME SHOULD BE THE SAME
-            hbRecorder.setFileName(filename);
-            hbRecorder.setOutputUri(mUri);
-        }else{
-            createFolder();
-            hbRecorder.setOutputPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) +"/HBRecorder");
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            resolver = activity.getContentResolver();
+//            contentValues = new ContentValues();
+//            contentValues.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies");
+//            contentValues.put(MediaStore.Video.Media.TITLE, filename);
+//            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
+//            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
+//            mUri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues);
+//            //FILE NAME SHOULD BE THE SAME
+//            hbRecorder.setFileName(filename);
+//            hbRecorder.setOutputUri(mUri);
+//        }else{
+            //createFolder();
+            hbRecorder.setOutputPath(getNextFileName());
+//            hbRecorder.setOutputPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) +"/HBRecorder");
+       // }
     }
+    private String getNextFileName() {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
+                .getAbsolutePath()
+                + File.separator
+                + "Record_"
+                + System.currentTimeMillis()
+                + ".mp4";
+    }
+
     //Check if permissions was granted
     private boolean checkSelfPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
