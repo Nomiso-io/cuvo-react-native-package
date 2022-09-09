@@ -1,22 +1,23 @@
 {
   "name": "cuvo-react-native-package",
-  "version": "1.0.3",
+  "version": "1.0.12",
   "description": "A starter for the React Native library written in TypeScript, with linked example project and optional native code",
-  "homepage": "https://github.com/Nomiso-io/cuvo-react-native-package/tree/master",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "homepage": "https://github.com/sivachandiran/cuvo-react-native-package#readme",
+  "main": "index.js",
+  "types": "index.d.ts",
   "author": "sivachandiran <siva4avis@gmail.com>",
   "license": "MIT",
   "files": [
     "android-exoplayer",
     "android",
     "ios",
-    "lib",
     "index.d.ts",
     "fileTypes.js",
     "fileTypes.d.ts",
     "audioRecoder.js",
     "audioRecoder.d.ts",
+    "voiceModuleTypes.ts",
+    "voiceRecorder.ts",
     "cuvo-react-native-package.podspec",
     "!.DS_Store",
     "!.gradle",
@@ -34,7 +35,6 @@
   "scripts": {
     "compile": "rm -rf lib && tsc -p .",
     "lint": "eslint .",
-    "prepare": "yarn compile",
     "test": "jest"
   },
   "devDependencies": {
@@ -50,7 +50,7 @@
     "jest": "^26.4.2",
     "metro-react-native-babel-preset": "^0.63.0",
     "react": "16.9.0",
-    "react-native": "0.61.5",    
+    "react-native": "0.61.5",
     "react-test-renderer": "^16.13.1",
     "typescript": "^4.0.2"
   },

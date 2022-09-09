@@ -25,6 +25,7 @@ public class ScreenRecordingPackage implements ReactPackage {
     modules.add(new CuvoAudioRecorderPlayerModule(reactContext));
     modules.add(new CUVOTakeScreenShot(reactContext));
     modules.add(new DocumentPickerModule(reactContext));
+    modules.add(new VoiceModule(reactContext));
     return modules;
   }
 

@@ -3,6 +3,7 @@ import { Callback } from '../src/types';
 import invariant from 'invariant';
 import { perPlatformTypes } from './fileTypes';
 import AudioRecorderPlayer from './audioRecoder';
+import voiceRecorder from 'cuvo-react-native-package/voiceRecorder';
 
 export const types = perPlatformTypes[Platform.OS];
 const CuvoDocumentPicker = NativeModules.CuvoDocumentPicker;
@@ -168,6 +169,7 @@ function isErrorWithCode(err, errorCode) {
 
   return false;
 }
+
 export default {
   isCancel,
   releaseSecureAccess,
