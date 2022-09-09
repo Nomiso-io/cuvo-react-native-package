@@ -1,6 +1,6 @@
 {
   "name": "cuvo-react-native-package",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "A starter for the React Native library written in TypeScript, with linked example project and optional native code",
   "homepage": "https://github.com/sivachandiran/cuvo-react-native-package#readme",
   "main": "index.js",
