@@ -10,9 +10,12 @@ Pod::Spec.new do |s|
 
   s.authors      = package['author']
   s.homepage     = package['homepage']
-  s.platform     = :ios, "9.0"
+  # s.platform     = :ios, "9.0"
 
   s.source       = { :git => "https://github.com/Nomiso-io/cuvo-react-native-package/tree/master", :tag => "v#{s.version}" }
+  s.ios.deployment_target = "9.0"
+  s.tvos.deployment_target = "9.0"
+
   s.source_files  = "ios/**/*.{h,m,swift}"
 
   s.dependency 'React'
